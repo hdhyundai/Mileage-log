@@ -198,7 +198,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-200 flex flex-col items-center justify-start sm:py-6 font-sans antialiased text-neutral-950 selection:bg-emerald-200 overscroll-none">
+    <div className="min-h-screen bg-neutral-200 flex flex-col items-center justify-start sm:py-6 font-sans antialiased text-neutral-950 selection:bg-emerald-200">
       
       {/* Toast Notification */}
       {toast && (
@@ -221,7 +221,7 @@ export function App() {
       )}
 
       {/* Main Container */}
-      <div className="w-full max-w-lg bg-white min-h-screen sm:min-h-0 sm:rounded-3xl sm:border-2 sm:border-neutral-300 sm:shadow-lg flex flex-col overflow-hidden overscroll-none">
+      <div className="w-full max-w-lg bg-white min-h-screen sm:min-h-0 sm:rounded-3xl sm:border-2 sm:border-neutral-300 sm:shadow-lg flex flex-col">
         
         {/* Modern Header with Prominent Download Button */}
         <header className="px-5 pt-4 pb-3.5 border-b-2 border-neutral-200 bg-white">

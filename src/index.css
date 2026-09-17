@@ -6,17 +6,13 @@
     -webkit-tap-highlight-color: transparent;
     word-break: keep-all;
     overflow-wrap: break-word;
-    /* 모바일 브라우저 스크롤 시 상/하단 당김 새로고침(Pull-to-Refresh) 및 바운스 방지 */
-    overscroll-behavior: none;
-    overscroll-behavior-y: none;
-    overscroll-behavior-x: none;
+    /* 자연스러운 상하 스크롤을 100% 허용하면서, 상단 당김 새로고침(Pull-to-Refresh)만 방지 */
+    overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
   }
 
   #root {
     min-height: 100vh;
-    overscroll-behavior: none;
-    overscroll-behavior-y: none;
   }
 
   /* 스피너(숫자 증감 화살표) 숨김 처리 */
