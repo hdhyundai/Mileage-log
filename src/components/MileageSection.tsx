@@ -39,23 +39,23 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
   };
 
   return (
-    <div className="bg-sky-50/40 rounded-2xl p-3 sm:p-3.5 border border-sky-200/70 space-y-2.5">
+    <div className="bg-sky-50/70 rounded-2xl p-3.5 sm:p-4 border-2 border-sky-300 space-y-3 shadow-2xs">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <label className="text-xs font-bold text-sky-950 tracking-tight flex items-center gap-1">
-            <Gauge className="w-3.5 h-3.5 text-sky-700" />
+          <label className="text-sm font-extrabold text-sky-950 tracking-tight flex items-center gap-1.5">
+            <Gauge className="w-4 h-4 text-sky-800 shrink-0" />
             <span>4. 주행거리</span>
           </label>
-          <span className="w-1.5 h-1.5 rounded-full bg-sky-600" />
+          <span className="w-2 h-2 rounded-full bg-sky-700" />
         </div>
         <div>
           {isNegative ? (
-            <span className="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+            <span className="text-xs font-bold text-rose-800 bg-rose-100 px-2.5 py-1 rounded-md border border-rose-300 whitespace-nowrap">
               도착 거리를 확인하세요
             </span>
           ) : (
-            <span className="text-[11px] font-bold text-sky-900 bg-white px-2 py-0.5 rounded border border-sky-200 font-mono shadow-2xs">
+            <span className="text-xs sm:text-sm font-black text-sky-950 bg-white px-2.5 py-1 rounded-lg border-2 border-sky-400 font-mono shadow-2xs whitespace-nowrap">
               당일 주행: +{drivenDistance} km
             </span>
           )}
@@ -63,10 +63,10 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
       </div>
 
       {/* Mileage Inputs (Side-by-side) */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2.5">
         {/* Start Mileage */}
         <div className="space-y-1">
-          <div className="flex items-center justify-between text-[11px] text-sky-900 font-semibold px-0.5">
+          <div className="flex items-center justify-between text-xs text-sky-950 font-bold px-0.5">
             <span>운행 전 (시작)</span>
             {!isEditingStart ? (
               <button
@@ -75,7 +75,7 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
                   setTempStart(startMileage.toString());
                   setIsEditingStart(true);
                 }}
-                className="text-[10px] text-sky-700 hover:text-sky-900 underline font-medium cursor-pointer"
+                className="text-xs text-sky-800 hover:text-sky-950 underline font-bold cursor-pointer"
               >
                 수정
               </button>
@@ -83,10 +83,10 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
               <button
                 type="button"
                 onClick={saveStartMileage}
-                className="text-[10px] font-bold text-emerald-700 flex items-center gap-0.5 cursor-pointer"
+                className="text-xs font-extrabold text-emerald-800 flex items-center gap-0.5 cursor-pointer bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-300"
               >
-                <Check className="w-3 h-3" />
-                <span>저장</span>
+                <Check className="w-3.5 h-3.5" />
+                <span>완료</span>
               </button>
             )}
           </div>
@@ -97,21 +97,21 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
               inputMode="numeric"
               value={tempStart}
               onChange={(e) => setTempStart(e.target.value)}
-              className="w-full h-10 bg-white border border-sky-400 rounded-xl px-2.5 font-mono text-sm font-bold text-right outline-none focus:ring-2 focus:ring-sky-200 text-neutral-900"
+              className="w-full h-11 sm:h-12 bg-white border-2 border-sky-500 rounded-xl px-3 font-mono text-base sm:text-lg font-black text-right outline-none focus:ring-2 focus:ring-sky-300 text-slate-950 shadow-2xs"
               autoFocus
             />
           ) : (
-            <div className="h-10 bg-white/80 border border-sky-100 rounded-xl px-2.5 flex items-center justify-end font-mono text-sm font-bold text-neutral-700">
-              {startMileage.toLocaleString()} <span className="text-xs ml-1 text-neutral-400 font-sans font-normal">km</span>
+            <div className="h-11 sm:h-12 bg-white border-2 border-sky-200 rounded-xl px-3 flex items-center justify-end font-mono text-base sm:text-lg font-black text-slate-800 shadow-2xs">
+              {startMileage.toLocaleString()} <span className="text-xs sm:text-sm ml-1 text-slate-500 font-sans font-bold">km</span>
             </div>
           )}
         </div>
 
         {/* End Mileage */}
         <div className="space-y-1">
-          <div className="flex items-center justify-between text-[11px] text-sky-900 font-semibold px-0.5">
+          <div className="flex items-center justify-between text-xs text-sky-950 font-bold px-0.5">
             <span>운행 후 (도착)</span>
-            <span className="text-[10px] text-sky-600 font-normal">누적</span>
+            <span className="text-xs text-sky-800 font-bold">누적 계기판</span>
           </div>
           <div className="relative">
             <input
@@ -124,10 +124,10 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
                 if (!isNaN(val)) onEndMileageChange(val);
               }}
               onFocus={(e) => e.target.select()}
-              placeholder="도착 총계"
-              className="w-full h-10 bg-white border border-sky-300 rounded-xl px-2.5 pr-8 font-mono text-sm font-bold text-right text-neutral-900 outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-200 transition-all shadow-2xs"
+              placeholder="도착 거리"
+              className="w-full h-11 sm:h-12 bg-white border-2 border-sky-400 hover:border-sky-600 rounded-xl px-3 pr-9 font-mono text-base sm:text-lg font-black text-right text-slate-950 outline-none focus:border-sky-800 focus:ring-2 focus:ring-sky-300 transition-all shadow-2xs"
             />
-            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-neutral-400 font-medium pointer-events-none">
+            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-slate-500 font-bold pointer-events-none">
               km
             </span>
           </div>
@@ -135,8 +135,8 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
       </div>
 
       {/* Quick Add Buttons */}
-      <div className="flex items-center gap-1 pt-0.5">
-        <span className="text-[10px] text-sky-800 font-semibold shrink-0 mr-0.5">
+      <div className="flex items-center gap-1.5 pt-0.5">
+        <span className="text-xs text-sky-950 font-extrabold shrink-0 mr-0.5 whitespace-nowrap">
           간편추가:
         </span>
         {quickIncrements.map((km) => (
@@ -144,7 +144,7 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
             type="button"
             key={km}
             onClick={() => handleQuickAdd(km)}
-            className="flex-1 h-7 rounded-lg bg-white border border-sky-200 hover:bg-sky-100/70 hover:border-sky-300 text-sky-950 text-xs font-bold active:scale-95 transition-all font-mono cursor-pointer"
+            className="flex-1 h-8.5 sm:h-9.5 rounded-xl bg-white border-2 border-sky-300 hover:bg-sky-100 hover:border-sky-500 text-sky-950 text-sm font-black active:scale-95 transition-all font-mono cursor-pointer shadow-2xs whitespace-nowrap flex items-center justify-center"
           >
             +{km}
           </button>
@@ -152,7 +152,7 @@ export const MileageSection: React.FC<MileageSectionProps> = ({
         <button
           type="button"
           onClick={() => onEndMileageChange(startMileage)}
-          className="h-7 px-2 rounded-lg bg-sky-100/70 hover:bg-sky-200 text-sky-800 text-[10px] font-semibold transition-colors cursor-pointer"
+          className="h-8.5 sm:h-9.5 px-2.5 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-950 text-xs font-black transition-colors cursor-pointer border border-sky-300 whitespace-nowrap flex items-center justify-center"
         >
           초기화
         </button>

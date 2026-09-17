@@ -62,66 +62,66 @@ export const ParkingPicker: React.FC<ParkingPickerProps> = ({
         key={item.spot}
         onClick={() => onSelectSpot(item.spot)}
         title={item.spot}
-        className={`h-8.5 sm:h-9 rounded-lg text-xs font-bold transition-all cursor-pointer relative ${
+        className={`h-9 sm:h-10 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer relative whitespace-nowrap flex items-center justify-center ${
           isSelected
-            ? 'bg-teal-700 text-white shadow-xs ring-2 ring-teal-500 scale-[1.03]'
-            : 'bg-white text-neutral-800 border border-teal-100 hover:bg-teal-50/60 hover:border-teal-300 active:scale-95'
+            ? 'bg-teal-900 text-white shadow-md border-2 border-teal-950 ring-2 ring-teal-400 scale-[1.03]'
+            : 'bg-white text-slate-900 border-2 border-teal-200 hover:bg-teal-100/70 hover:border-teal-400 active:scale-95'
         }`}
       >
-        {item.label}
+        <span>{item.label}</span>
         {isCurrent && !isSelected && (
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 absolute top-0.5 right-0.5" />
+          <span className="w-2 h-2 rounded-full bg-amber-500 absolute top-1 right-1" title="현재 차량 위치" />
         )}
       </button>
     );
   };
 
   return (
-    <div className="bg-teal-50/40 rounded-2xl p-3 sm:p-3.5 border border-teal-200/70 space-y-2.5">
+    <div className="bg-teal-50/70 rounded-2xl p-3.5 sm:p-4 border-2 border-teal-300 space-y-3 shadow-2xs">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <label className="text-xs font-bold text-teal-950 tracking-tight flex items-center gap-1">
-            <Car className="w-3.5 h-3.5 text-teal-700" />
+          <label className="text-sm font-extrabold text-teal-950 tracking-tight flex items-center gap-1.5">
+            <Car className="w-4 h-4 text-teal-800 shrink-0" />
             <span>7. 주차 위치</span>
           </label>
-          <span className="w-1.5 h-1.5 rounded-full bg-teal-600" />
+          <span className="w-2 h-2 rounded-full bg-teal-700" />
         </div>
 
         {selectedSpot ? (
-          <span className="text-xs font-bold text-teal-900 bg-white px-2 py-0.5 rounded-md border border-teal-300 shadow-2xs font-mono">
-            {selectedSpot}
+          <span className="text-xs sm:text-sm font-black text-teal-950 bg-white px-2.5 py-1 rounded-lg border-2 border-teal-400 shadow-2xs font-mono whitespace-nowrap">
+            선택: {selectedSpot}
           </span>
         ) : (
-          <span className="text-[11px] text-teal-700 font-medium">
-            주차 구역 선택
+          <span className="text-xs text-teal-900 font-bold bg-teal-100 px-2 py-0.5 rounded border border-teal-300 whitespace-nowrap">
+            주차 구역 터치
           </span>
         )}
       </div>
 
       {/* 주차 구역 (상단 / 하단 10면) */}
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         
         {/* 상단/하단 영역 상단 라벨 */}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center text-center text-[11px] font-bold text-teal-900 px-1">
-          <span>◀ 본관 (5 ~ 1)</span>
-          <span className="w-4 text-center text-teal-300">|</span>
-          <span>건강센터 (1 ~ 5) ▶</span>
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center text-center text-[11px] sm:text-xs font-black text-teal-950 px-1 gap-1">
+          <span className="whitespace-nowrap">◀ 본관 방향 (5~1)</span>
+          <span className="w-3 text-center text-teal-400">|</span>
+          <span className="whitespace-nowrap">건강센터 방향 (1~5) ▶</span>
         </div>
 
         {/* 상단 10면: [본5 본4 본3 본2 본1] | [건1 건2 건3 건4 건5] */}
         <div className="space-y-1">
-          <div className="flex items-center justify-between text-[10px] font-semibold text-teal-800 px-0.5">
-            <span>상단</span>
+          <div className="flex items-center justify-between text-xs font-bold text-teal-900 px-0.5">
+            <span>상단 주차선</span>
           </div>
-          <div className="grid grid-cols-[1fr_auto_1fr] gap-1.5 items-center">
+          <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center">
             {/* 본관 (5 -> 1) */}
             <div className="grid grid-cols-5 gap-1">
               {mainBldgTopReversed.map(renderSpotBtn)}
             </div>
 
             {/* 중앙 구분선 */}
-            <div className="w-px h-6 bg-teal-200" />
+            <div className="w-0.5 h-7 bg-teal-300" />
 
             {/* 건강센터 (1 -> 5) */}
             <div className="grid grid-cols-5 gap-1">
@@ -132,17 +132,17 @@ export const ParkingPicker: React.FC<ParkingPickerProps> = ({
 
         {/* 하단 10면: [본5 본4 본3 본2 본1] | [건1 건2 건3 건4 건5] */}
         <div className="space-y-1">
-          <div className="flex items-center justify-between text-[10px] font-semibold text-teal-800 px-0.5">
-            <span>하단</span>
+          <div className="flex items-center justify-between text-xs font-bold text-teal-900 px-0.5">
+            <span>하단 주차선</span>
           </div>
-          <div className="grid grid-cols-[1fr_auto_1fr] gap-1.5 items-center">
+          <div className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center">
             {/* 본관 (5 -> 1) */}
             <div className="grid grid-cols-5 gap-1">
               {mainBldgBottomReversed.map(renderSpotBtn)}
             </div>
 
             {/* 중앙 구분선 */}
-            <div className="w-px h-6 bg-teal-200" />
+            <div className="w-0.5 h-7 bg-teal-300" />
 
             {/* 건강센터 (1 -> 5) */}
             <div className="grid grid-cols-5 gap-1">
@@ -152,11 +152,11 @@ export const ParkingPicker: React.FC<ParkingPickerProps> = ({
         </div>
 
         {/* 지원관: 가운데 제일 밑 위치 */}
-        <div className="pt-1 flex justify-center">
-          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-white border border-teal-200 text-teal-900 rounded-xl text-xs font-bold shadow-2xs">
-            <Building2 className="w-3.5 h-3.5 text-teal-700" />
+        <div className="pt-1.5 flex justify-center">
+          <div className="inline-flex items-center gap-2 px-5 py-2 bg-white border-2 border-teal-300 text-teal-950 rounded-xl text-xs sm:text-sm font-black shadow-2xs">
+            <Building2 className="w-4 h-4 text-teal-800" />
             <span>지원관</span>
-            <span className="text-[10px] font-normal text-teal-600">(중앙 기준)</span>
+            <span className="text-xs font-bold text-teal-700">(중앙 기준)</span>
           </div>
         </div>
 

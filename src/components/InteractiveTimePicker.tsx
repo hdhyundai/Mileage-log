@@ -51,7 +51,6 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
     if (isEnd && minParsed) {
       const minH = parseInt(minParsed.hour, 10);
       if (hourNum < minH) return false;
-      // If same hour, must have at least one minute >= minTotalMinutes
       if (hourNum === minH) {
         const hasValidMin = WORK_MINUTES.some((m) => {
           return timeToMinutes(`${h}:${m}`) >= minTotalMinutes;
@@ -80,14 +79,12 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
 
   const handleSelectHour = (h: string) => {
     if (h === '18') {
-      // 18:00 is end of standard workday, set directly and close
       onChange('18:00');
       setIsOpen(false);
       setSelectedHour(null);
       return;
     }
 
-    // Check valid minutes for this hour
     const validMins = WORK_MINUTES.filter((m) => {
       const totalM = timeToMinutes(`${h}:${m}`);
       if (isEnd && minTime) {
@@ -110,7 +107,7 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
 
   return (
     <div className="space-y-1 relative" ref={containerRef}>
-      <span className="text-[11px] text-neutral-600 font-medium block h-4">
+      <span className="text-xs font-bold text-emerald-950 block h-4.5">
         {label}
       </span>
 
@@ -118,34 +115,34 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
       <button
         type="button"
         onClick={handleOpen}
-        className={`w-full h-10 bg-white hover:bg-emerald-50/50 border text-neutral-900 rounded-xl px-2.5 flex items-center justify-between text-xs sm:text-sm font-bold font-mono transition-all cursor-pointer shadow-2xs ${
+        className={`w-full h-11 sm:h-12 bg-white hover:bg-emerald-50 border-2 text-slate-950 rounded-xl px-3 flex items-center justify-between text-sm sm:text-base font-extrabold font-mono transition-all cursor-pointer shadow-2xs ${
           isOpen
-            ? 'border-emerald-600 ring-2 ring-emerald-100'
-            : 'border-emerald-200'
+            ? 'border-emerald-700 ring-2 ring-emerald-300'
+            : 'border-emerald-300 hover:border-emerald-500'
         }`}
       >
-        <span className="text-emerald-950">{value}</span>
-        <ChevronDown className={`w-3.5 h-3.5 text-emerald-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="text-emerald-950 text-base font-extrabold">{value}</span>
+        <ChevronDown className={`w-4 h-4 text-emerald-800 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Dropdown Popover */}
       {isOpen && (
         <div 
-          className={`absolute top-full mt-1 z-40 w-56 sm:w-60 bg-white border border-neutral-200 rounded-xl shadow-lg p-2 space-y-1.5 animate-in fade-in-50 duration-100 ${
+          className={`absolute top-full mt-1.5 z-40 w-60 sm:w-64 bg-white border-2 border-neutral-300 rounded-2xl shadow-xl p-2.5 space-y-2 animate-in fade-in-50 duration-100 ${
             isEnd ? 'right-0' : 'left-0'
           }`}
         >
           {selectedHour === null ? (
             /* STEP 1: 시간 선택 */
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-[11px] font-bold text-neutral-700 border-b border-neutral-100 pb-1 px-0.5">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-extrabold text-neutral-900 border-b border-neutral-200 pb-1.5 px-1">
                 <span>시간(시) 선택</span>
-                <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1 py-0.2 rounded">
+                <span className="text-xs text-emerald-900 font-bold bg-emerald-100 px-1.5 py-0.5 rounded border border-emerald-300">
                   08~18시
                 </span>
               </div>
               
-              <div className="grid grid-cols-4 gap-1 pt-0.5">
+              <div className="grid grid-cols-4 gap-1.5 pt-0.5">
                 {availableHours.map((h) => {
                   const isCurrentH = parsed.hour === h;
                   return (
@@ -153,10 +150,10 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
                       type="button"
                       key={`hour-${h}`}
                       onClick={() => handleSelectHour(h)}
-                      className={`h-7.5 rounded-lg text-xs font-bold font-mono transition-all cursor-pointer ${
+                      className={`h-9 rounded-xl text-sm font-extrabold font-mono transition-all cursor-pointer ${
                         isCurrentH
-                          ? 'bg-emerald-700 text-white shadow-2xs'
-                          : 'bg-neutral-100 text-neutral-800 hover:bg-emerald-50 hover:text-emerald-800 active:scale-95'
+                          ? 'bg-emerald-800 text-white shadow-sm ring-2 ring-emerald-400'
+                          : 'bg-neutral-100 text-neutral-900 hover:bg-emerald-100 hover:text-emerald-950 border border-neutral-200 active:scale-95'
                       }`}
                     >
                       {parseInt(h, 10)}시
@@ -167,20 +164,20 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
             </div>
           ) : (
             /* STEP 2: 분 선택 */
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-[11px] font-bold text-neutral-800 border-b border-neutral-100 pb-1 px-0.5">
-                <span className="text-emerald-800 font-bold">{parseInt(selectedHour, 10)}시</span>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-extrabold text-neutral-950 border-b border-neutral-200 pb-1.5 px-1">
+                <span className="text-emerald-950 font-black text-sm">{parseInt(selectedHour, 10)}시</span>
                 <button
                   type="button"
                   onClick={() => setSelectedHour(null)}
-                  className="text-[10px] text-neutral-500 hover:text-neutral-900 font-semibold flex items-center gap-0.5 cursor-pointer"
+                  className="text-xs text-neutral-700 hover:text-black font-bold flex items-center gap-1 cursor-pointer bg-neutral-100 px-2 py-0.5 rounded border border-neutral-300"
                 >
-                  <ArrowLeft className="w-2.5 h-2.5" />
-                  <span>시간 변경</span>
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>시간 다시 선택</span>
                 </button>
               </div>
 
-              <div className="grid grid-cols-3 gap-1 pt-0.5">
+              <div className="grid grid-cols-3 gap-1.5 pt-0.5">
                 {availableMinutes.map((m) => {
                   const isCurrent = parsed.hour === selectedHour && parsed.minute === m;
                   return (
@@ -188,10 +185,10 @@ export const InteractiveTimePicker: React.FC<InteractiveTimePickerProps> = ({
                       type="button"
                       key={`min-${m}`}
                       onClick={() => handleSelectMinute(m)}
-                      className={`h-7.5 rounded-lg text-xs font-bold font-mono transition-all cursor-pointer ${
+                      className={`h-9 rounded-xl text-sm font-extrabold font-mono transition-all cursor-pointer ${
                         isCurrent
-                          ? 'bg-emerald-700 text-white shadow-2xs'
-                          : 'bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-600 hover:text-white active:scale-95'
+                          ? 'bg-emerald-800 text-white shadow-sm ring-2 ring-emerald-400'
+                          : 'bg-emerald-50 text-emerald-950 border-2 border-emerald-300 hover:bg-emerald-600 hover:text-white active:scale-95'
                       }`}
                     >
                       {m}분

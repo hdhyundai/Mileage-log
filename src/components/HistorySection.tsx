@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Download, Search, Trash2, Printer, FileSpreadsheet, Car, Calendar, FileText } from 'lucide-react';
+import { Search, Trash2, FileSpreadsheet, Car } from 'lucide-react';
 import { VehicleLog } from '../types';
 import { 
-  exportMonthlyReportExcel, 
   getAvailableMonths, 
   getMonthlyLogsWithSeq,
   normalizeDateStr,
@@ -55,21 +54,21 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
   }, [logs, availableMonths]);
 
   const targetExportMonth = selectedMonth !== 'all' ? selectedMonth : (availableMonths[0]?.key || '2026-09');
-  const [exportYear, exportMonth] = targetExportMonth.split('-');
+  const [, exportMonth] = targetExportMonth.split('-');
 
   return (
     <div className="space-y-4">
       
       {/* Top Controls & Prominent Official Report Banner */}
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-3">
         
         {/* Main Official Form & Monthly Report Action Banner */}
-        <div className="p-3 sm:p-3.5 bg-neutral-900 text-white rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div className="p-3.5 sm:p-4 bg-neutral-950 text-white rounded-2xl flex items-center justify-between gap-3 shadow-md border-2 border-neutral-800">
           <div className="flex items-center gap-2.5 min-w-0">
-            <FileSpreadsheet className="w-5 h-5 text-emerald-400 shrink-0" />
-            <div className="text-xs sm:text-sm font-bold flex items-center gap-2">
-              <span>공용차량 운행 실적 보고서</span>
-              <span className="text-[10px] font-semibold text-emerald-300 bg-emerald-950 px-1.5 py-0.5 rounded border border-emerald-800">
+            <FileSpreadsheet className="w-6 h-6 text-emerald-400 shrink-0" />
+            <div className="text-sm sm:text-base font-extrabold flex items-center gap-2">
+              <span>운행 실적 보고서</span>
+              <span className="text-xs font-black text-emerald-950 bg-emerald-300 px-2 py-0.5 rounded-md border border-emerald-400">
                 {exportMonth}월
               </span>
             </div>
@@ -79,26 +78,26 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
             <button
               type="button"
               onClick={onOpenOfficialSheet}
-              className="h-8.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+              className="h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-black flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer active:scale-95"
             >
-              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <FileSpreadsheet className="w-4 h-4" />
               <span>양식 출력</span>
             </button>
           </div>
         </div>
 
         {/* Filter Toolbar: Month Selection & Search */}
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col gap-2.5">
           
           {/* Month Selector Buttons */}
-          <div className="flex items-center gap-1 p-1 bg-neutral-100 rounded-xl overflow-x-auto shrink-0 text-xs">
+          <div className="flex items-center gap-1.5 p-1.5 bg-neutral-200 rounded-xl overflow-x-auto shrink-0 text-xs sm:text-sm">
             <button
               type="button"
               onClick={() => setSelectedMonth('all')}
-              className={`px-2.5 py-1.5 rounded-lg font-semibold transition-all ${
+              className={`px-3 py-2 rounded-lg font-black transition-all ${
                 selectedMonth === 'all'
-                  ? 'bg-white text-neutral-900 shadow-2xs font-bold'
-                  : 'text-neutral-600 hover:text-neutral-900'
+                  ? 'bg-neutral-950 text-white shadow-xs'
+                  : 'text-neutral-800 hover:text-black hover:bg-neutral-300'
               }`}
             >
               전체 ({logs.length})
@@ -108,10 +107,10 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                 type="button"
                 key={m.key}
                 onClick={() => setSelectedMonth(m.key)}
-                className={`px-2.5 py-1.5 rounded-lg font-semibold transition-all whitespace-nowrap ${
+                className={`px-3 py-2 rounded-lg font-black transition-all whitespace-nowrap ${
                   selectedMonth === m.key
-                    ? 'bg-white text-emerald-800 shadow-2xs font-bold'
-                    : 'text-neutral-600 hover:text-neutral-900'
+                    ? 'bg-emerald-800 text-white shadow-xs'
+                    : 'text-neutral-800 hover:text-black hover:bg-neutral-300'
                 }`}
               >
                 {m.label.replace(' (당월)', '')} ({m.count})
@@ -120,14 +119,14 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
           </div>
 
           {/* Search Field */}
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <div className="relative">
+            <Search className="w-5 h-5 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="운전자, 일자, 목적지, 주차구역 검색..."
-              className="w-full h-10 bg-neutral-50 border border-neutral-200 rounded-xl pl-9 pr-3 text-xs font-medium outline-none focus:bg-white focus:border-emerald-600 transition-all placeholder:text-neutral-400"
+              placeholder="운전자 이름, 목적지, 주차구역 검색..."
+              className="w-full h-11 bg-white border-2 border-neutral-300 rounded-xl pl-10 pr-3 text-sm sm:text-base font-bold text-neutral-950 outline-none focus:border-neutral-900 transition-all placeholder:text-neutral-400 shadow-2xs"
             />
           </div>
 
@@ -137,11 +136,11 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
 
       {/* Logs List matching official items */}
       {filtered.length === 0 ? (
-        <div className="py-12 text-center text-xs text-neutral-400 bg-neutral-50 rounded-2xl border border-neutral-200">
-          선택한 기간의 운행 기록이 없습니다.
+        <div className="py-12 text-center text-sm font-bold text-neutral-500 bg-neutral-100 rounded-2xl border-2 border-neutral-300">
+          선택한 조건의 운행 기록이 없습니다.
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {filtered.map((log) => {
             const monthlySeq = monthlySeqMap.get(log.id) || log.seq;
             const rawDate = log.date ? normalizeDateStr(log.date) : '';
@@ -151,46 +150,46 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
             return (
               <div
                 key={log.id}
-                className="bg-neutral-50 hover:bg-neutral-100/80 rounded-xl p-3.5 border border-neutral-200/80 transition-colors flex items-center justify-between gap-3"
+                className="bg-white hover:bg-neutral-50 rounded-2xl p-3.5 sm:p-4 border-2 border-neutral-200/90 shadow-2xs transition-colors flex items-center justify-between gap-3"
               >
-                <div className="space-y-1.5 min-w-0 flex-1">
+                <div className="space-y-2 min-w-0 flex-1">
                   
                   {/* Top row: 순번 badge (한달 기준 순번), 일자, 운전자, 목적 */}
                   <div className="flex items-center gap-2 flex-wrap">
                     <span 
-                      className="text-[10px] font-mono bg-emerald-100/80 text-emerald-800 px-1.5 py-0.5 rounded font-bold border border-emerald-300"
+                      className="text-xs font-mono bg-emerald-100 text-emerald-950 px-2 py-0.5 rounded-md font-extrabold border border-emerald-400 whitespace-nowrap"
                       title={`${logMonthStr}월 순번 ${monthlySeq}호`}
                     >
                       {logMonthStr}월 #{monthlySeq}
                     </span>
-                    <span className="text-xs font-mono text-neutral-600">
+                    <span className="text-sm font-mono font-bold text-neutral-700 whitespace-nowrap">
                       {formattedDate}
                     </span>
-                    <span className="text-xs font-bold text-neutral-900">
+                    <span className="text-sm sm:text-base font-black text-slate-950 whitespace-nowrap">
                       {log.userName}
                     </span>
-                    <span className="text-[11px] text-neutral-400">·</span>
-                    <span className="text-xs text-neutral-800 font-medium truncate">
+                    <span className="text-sm text-neutral-400">·</span>
+                    <span className="text-sm font-extrabold text-slate-900 truncate">
                       {log.destination}
                     </span>
-                    <span className="text-[10px] bg-neutral-200/70 text-neutral-700 px-1.5 py-0.5 rounded font-medium">
+                    <span className="text-xs font-extrabold bg-indigo-100 text-indigo-950 px-2 py-0.5 rounded-md border border-indigo-300 whitespace-nowrap">
                       {log.purpose}
                     </span>
                   </div>
 
                   {/* Middle row: 당일 주행거리, 총계, 운행시간 */}
-                  <div className="flex items-center gap-2 text-[11px] text-neutral-500 flex-wrap">
-                    <span className="text-emerald-700 font-bold font-mono">
-                      당일: +{log.drivenDistance}km
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 flex-wrap font-bold">
+                    <span className="text-emerald-800 font-black font-mono text-sm sm:text-base whitespace-nowrap">
+                      +{log.drivenDistance}km
                     </span>
                     <span className="text-neutral-400">/</span>
-                    <span className="font-mono text-neutral-600">
-                      총계: {log.endMileage?.toLocaleString()}km
+                    <span className="font-mono text-slate-700 font-extrabold whitespace-nowrap">
+                      누적: {log.endMileage?.toLocaleString()}km
                     </span>
                     {(log.startTime || log.endTime) && (
                       <>
                         <span className="text-neutral-400">·</span>
-                        <span className="font-mono text-neutral-600">
+                        <span className="font-mono text-slate-700 font-extrabold bg-neutral-100 px-1.5 py-0.2 rounded border border-neutral-200 whitespace-nowrap">
                           {log.startTime || '--:--'} ~ {log.endTime || '--:--'}
                         </span>
                       </>
@@ -198,8 +197,8 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                     {log.parkingSpot && (
                       <>
                         <span className="text-neutral-400">·</span>
-                        <span className="text-neutral-800 font-semibold inline-flex items-center gap-1 bg-white px-1.5 py-0.5 rounded border border-neutral-200/80 text-[10px]">
-                          <Car className="w-3 h-3 text-emerald-600" />
+                        <span className="text-teal-950 font-black inline-flex items-center gap-1 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-300 text-xs whitespace-nowrap">
+                          <Car className="w-3.5 h-3.5 text-teal-700 shrink-0" />
                           <span>{log.parkingSpot}</span>
                         </span>
                       </>
@@ -208,14 +207,14 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
 
                   {/* Bottom row: 주유량 / 정비 / 메모 */}
                   {(log.fuelAmount || log.maintenance || log.notes) && (
-                    <div className="text-[11px] text-neutral-500 flex items-center gap-2 flex-wrap pt-0.5 border-t border-neutral-200/60 mt-1">
+                    <div className="text-xs sm:text-sm text-neutral-700 flex items-center gap-2 flex-wrap pt-1.5 border-t border-neutral-200 mt-1 font-semibold">
                       {log.fuelAmount && (
-                        <span className="text-amber-700 font-medium">
+                        <span className="text-amber-900 font-extrabold bg-amber-50 px-1.5 py-0.2 rounded border border-amber-300 whitespace-nowrap">
                           주유: {log.fuelAmount}
                         </span>
                       )}
                       {log.maintenance && (
-                        <span className="text-blue-700 font-medium">
+                        <span className="text-blue-900 font-extrabold bg-blue-50 px-1.5 py-0.2 rounded border border-blue-300 whitespace-nowrap">
                           정비: {log.maintenance}
                         </span>
                       )}
@@ -227,7 +226,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                           .replace(/^[/\s,·-]+|[/\s,·-]+$/g, '')
                           .trim();
                         return cleanNote ? (
-                          <span className="text-neutral-600 truncate">
+                          <span className="text-neutral-800 truncate">
                             비고: {cleanNote}
                           </span>
                         ) : null;
@@ -241,10 +240,10 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                 <button
                   type="button"
                   onClick={() => onDeleteLog(log.id)}
-                  className="w-8 h-8 rounded-lg text-neutral-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+                  className="w-9 h-9 rounded-xl text-neutral-400 hover:text-red-700 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0 cursor-pointer border border-transparent hover:border-red-200"
                   title="기록 삭제"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4.5 h-4.5" />
                 </button>
               </div>
             );
