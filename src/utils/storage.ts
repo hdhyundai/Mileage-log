@@ -191,6 +191,30 @@ export function saveLogs(logs: VehicleLog[]): void {
 // -------------------------------------------------------------
 
 /**
+ * Sanitizes log object to prevent Firestore "Unsupported field value: undefined" errors
+ */
+export function cleanLogForFirestore(log: VehicleLog): Record<string, any> {
+  return {
+    id: log.id,
+    seq: typeof log.seq === 'number' ? log.seq : 1,
+    date: normalizeDateStr(log.date),
+    userName: log.userName || '',
+    purpose: log.purpose || '',
+    destination: log.destination || '',
+    startMileage: Number(log.startMileage) || 0,
+    endMileage: Number(log.endMileage) || 0,
+    drivenDistance: Number(log.drivenDistance) || 0,
+    startTime: log.startTime || '',
+    endTime: log.endTime || '',
+    fuelAmount: log.fuelAmount || '',
+    maintenance: log.maintenance || '',
+    parkingSpot: log.parkingSpot || '',
+    notes: log.notes || '',
+    timestamp: typeof log.timestamp === 'number' ? log.timestamp : Date.now()
+  };
+}
+
+/**
  * Real-time subscription to Cloud Firestore vehicle_logs collection.
  * Automatically synchronizes across all mobile phones and web browsers.
  */
@@ -215,15 +239,15 @@ export function subscribeToCloudLogs(
               userName: data.userName || '',
               purpose: data.purpose || '',
               destination: data.destination || '',
-              startMileage: data.startMileage || 0,
-              endMileage: data.endMileage || 0,
-              drivenDistance: data.drivenDistance || 0,
+              startMileage: Number(data.startMileage) || 0,
+              endMileage: Number(data.endMileage) || 0,
+              drivenDistance: Number(data.drivenDistance) || 0,
               startTime: data.startTime || '',
               endTime: data.endTime || '',
               fuelAmount: data.fuelAmount || '',
               maintenance: data.maintenance || '',
               parkingSpot: data.parkingSpot || '',
-              timestamp: data.timestamp || Date.now(),
+              timestamp: Number(data.timestamp) || Date.now(),
               notes: data.notes || ''
             });
           });
@@ -257,7 +281,7 @@ async function seedInitialLogsToCloud(logs: VehicleLog[]): Promise<void> {
   try {
     for (const log of logs) {
       const docRef = doc(db, 'vehicle_logs', log.id);
-      await setDoc(docRef, log, { merge: true });
+      await setDoc(docRef, cleanLogForFirestore(log), { merge: true });
     }
   } catch (e) {
     console.warn('Seed logs error:', e);
@@ -268,24 +292,17 @@ async function seedInitialLogsToCloud(logs: VehicleLog[]): Promise<void> {
  * Adds or updates a log in Cloud Firestore
  */
 export async function saveLogToCloud(log: VehicleLog): Promise<void> {
-  try {
-    const docRef = doc(db, 'vehicle_logs', log.id);
-    await setDoc(docRef, log, { merge: true });
-  } catch (err) {
-    console.error('Failed to save to Firestore:', err);
-  }
+  const docRef = doc(db, 'vehicle_logs', log.id);
+  const cleaned = cleanLogForFirestore(log);
+  await setDoc(docRef, cleaned, { merge: true });
 }
 
 /**
  * Deletes a log from Cloud Firestore
  */
 export async function deleteLogFromCloud(logId: string): Promise<void> {
-  try {
-    const docRef = doc(db, 'vehicle_logs', logId);
-    await deleteDoc(docRef);
-  } catch (err) {
-    console.error('Failed to delete from Firestore:', err);
-  }
+  const docRef = doc(db, 'vehicle_logs', logId);
+  await deleteDoc(docRef);
 }
 
 /**
