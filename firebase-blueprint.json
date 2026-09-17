@@ -1,0 +1,32 @@
+{
+  "entities": {
+    "VehicleLog": {
+      "collection": "vehicle_logs",
+      "fields": {
+        "id": { "type": "string" },
+        "date": { "type": "string" },
+        "userName": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "startMileage": { "type": "number" },
+        "endMileage": { "type": "number" },
+        "drivenDistance": { "type": "number" },
+        "purpose": { "type": "string" },
+        "destination": { "type": "string" },
+        "parkingSpot": { "type": "string" },
+        "fuelAmount": { "type": "string" },
+        "maintenance": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "number" }
+      }
+    },
+    "VehicleStatus": {
+      "collection": "vehicle_status",
+      "fields": {
+        "currentCarSpot": { "type": "string" },
+        "currentMileage": { "type": "number" },
+        "lastUpdated": { "type": "number" }
+      }
+    }
+  }
+}
